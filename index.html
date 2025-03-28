@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Range Slider</title>
+    <style>
+        body {
+            background-color: rgb(46, 4, 214);
+            font-family: sans-serif;
+        }
+        .slider {
+            padding: 30px;
+            border-radius: 3px;
+            top: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgb(255, 255, 255);
+        }
+        .range-slider {
+            width: 300px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 20px;
+        }
+        p {
+            text-align: center;
+            margin-top: -10px;
+            font-size: 30px;
+            color: rgb(7, 77, 189);
+        }
+        .range-slider .rangeValues {
+            display: block;
+            box-shadow: 0 0 20px rgba(0,139,253,0.25);
+            padding: 20px;
+            font-size: 22px;
+            margin-bottom: 35px;
+        }
+        input[type=range] {
+            -webkit-appearance: none;
+            border: 1px solid white;
+            width: 300px;
+            position: absolute;
+            left: 0;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 300px;
+            height: 5px;
+            background: #ddd;
+            border: none;
+            border-radius: 3px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            border: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #0273a0;
+            margin-top: -6px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+        input[type=range]:focus::-webkit-slider-runnable-track {
+            background: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider">
+        <p>Price Range</p>
+        <div class="range-slider">
+            <span class="rangeValues"></span>
+            <input value="1000" min="1000" max="50000" step="500" type="range">
+            <input value="50000" min="1000" max="50000" step="500" type="range">
+        </div>
+    </div>
+    <script>
+        function getVals() {
+            let parent = this.parentNode || document.querySelector(".range-slider");
+            let slides = parent.getElementsByTagName("input");
+            let slide1 = parseFloat(slides[0].value);
+            let slide2 = parseFloat(slides[1].value);
+            
+            if (slide1 > slide2) {
+                [slide1, slide2] = [slide2, slide1];
+            }
+            
+            let displayElement = parent.querySelector(".rangeValues");
+            displayElement.innerHTML = `$${slide1} - $${slide2}`;
+        }
+        
+        window.onload = function () {
+            let sliderSections = document.getElementsByClassName("range-slider");
+            for (let x = 0; x < sliderSections.length; x++) {
+                let sliders = sliderSections[x].getElementsByTagName("input");
+                for (let y = 0; y < sliders.length; y++) {
+                    if (sliders[y].type === "range") {
+                        sliders[y].addEventListener("input", getVals);
+                    }
+                }
+                getVals.call(sliderSections[x]);
+            }
+        };
+    </script>
+</body>
+</html>
